@@ -3,7 +3,6 @@ let progresso = document.querySelectorAll("#msform #progressbar li");
 let btnN = document.getElementsByClassName("next action-button");
 let btnP = document.getElementsByClassName("previous action-button");
 let campos = document.querySelectorAll("#msform input:not([type=button]):not([type=submit])");
-
 let quebra = document.createElement("br");
 
 function createValid(){
@@ -26,7 +25,7 @@ function agregValid(campo,texto){
     });
 }
 
-function validVazio (campo){
+let validVazio = function(campo){
     
     if (campo.value == "" && campo.type != "password") {
         
@@ -38,7 +37,7 @@ function validVazio (campo){
     return true;
 };
 
-function validTamSenha(campo){
+let validTamSenha = function (campo){
     campo.addEventListener("blur", function (e) {
         e.preventDefault();
         
@@ -48,11 +47,11 @@ function validTamSenha(campo){
 
                 return false;
             }   
+            return true; 
     }); 
-    return true; 
-}
+};
 
-function validConfSenha(campo1, campo2){
+let validConfSenha = function(campo1, campo2){
     campo2.addEventListener("blur", function (e) {
         e.preventDefault();
         
@@ -62,9 +61,9 @@ function validConfSenha(campo1, campo2){
 
                 return false;
             }  
+            return true; 
     });
-    return true; 
-}
+};
 
 for (let i = 0; i < campos.length; i++) {
 
@@ -78,6 +77,6 @@ validTamSenha(campos[1]);
 validConfSenha(campos[1], campos[2]);
 
 
-if(validVazio() && validTamSenha && validConfSenha()){
+if(validVazio == true && validTamSenha == true && validConfSenha == true){
     console.log("teste");
 }
