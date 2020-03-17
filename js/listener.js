@@ -31,7 +31,7 @@ function agregValid(campo,texto){
     });
 }
 
-let validVazio = function(campo){
+function validVazio(campo){
     
     campo.addEventListener("blur", function (e) {
 
@@ -46,7 +46,7 @@ let validVazio = function(campo){
     });
 };
 
-let validTamSenha = function (campo){
+function validTamSenha(campo){
     campo.addEventListener("blur", function (e) {
         e.preventDefault();
         
@@ -60,7 +60,7 @@ let validTamSenha = function (campo){
     }); 
 };
 
-let validConfSenha = function(campo1, campo2){
+function validConfSenha (campo1, campo2){
     campo2.addEventListener("blur", function (e) {
         e.preventDefault();
         
@@ -78,7 +78,7 @@ let validConfSenha = function(campo1, campo2){
 for (let i = 0; i < campos.length; i++) {
 
     campos[i].addEventListener("blur", function () {
-        
+
         verVazio = validVazio(campos[i]);
     });
 };
