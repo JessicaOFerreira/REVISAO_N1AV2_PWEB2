@@ -33,14 +33,17 @@ function agregValid(campo,texto){
 
 let validVazio = function(campo){
     
-    if (campo.value == "" && campo.type != "password") {
-        
-        let textVali = document.createTextNode("Campo Obrigatório!");
-        agregValid(campo, textVali);
+    campo.addEventListener("blur", function (e) {
 
-        return false;
-    }
-    return true;
+        if (campo.value == "" && campo.type != "password") {
+            
+            let textVali = document.createTextNode("Campo Obrigatório!");
+            agregValid(campo, textVali);
+
+            return false;
+        }
+        return true;
+    });
 };
 
 let validTamSenha = function (campo){
