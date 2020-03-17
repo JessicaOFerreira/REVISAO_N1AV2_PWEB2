@@ -5,6 +5,12 @@ let btnP = document.getElementsByClassName("previous action-button");
 let campos = document.querySelectorAll("#msform input:not([type=button]):not([type=submit])");
 let quebra = document.createElement("br");
 
+// variaveis verificação
+let verVazio = false;
+let verTamSenha = false;
+let verConfSenha = false;
+
+//---------------------------------------------------------
 function createValid(){
     let verificacao = document.createElement("span");
     verificacao.id = "verif";
@@ -47,7 +53,7 @@ let validTamSenha = function (campo){
 
                 return false;
             }   
-            return true; 
+        return true; 
     }); 
 };
 
@@ -65,18 +71,22 @@ let validConfSenha = function(campo1, campo2){
     });
 };
 
+//-------------------------------------------------------------------------------------------
 for (let i = 0; i < campos.length; i++) {
 
     campos[i].addEventListener("blur", function () {
         
-        validVazio(campos[i]);
+        verVazio = validVazio(campos[i]);
     });
 };
+ 
+verTamSenha = validTamSenha(campos[1]);
+verConfSenha = validConfSenha(campos[1], campos[2]);
 
-validTamSenha(campos[1]);
-validConfSenha(campos[1], campos[2]);
+console.log(verVazio);
+console.log(verTamSenha);
+console.log(verConfSenha);
 
-
-if(validVazio == true && validTamSenha == true && validConfSenha == true){
+if(verVazio == true && verTamSenha == true && verConfSenha == true){
     console.log("teste");
 }
