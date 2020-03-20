@@ -2,94 +2,104 @@ let formularios = document.querySelectorAll("#msform fieldset");
 let progresso = document.querySelectorAll("#msform #progressbar li");
 let btnN = document.getElementsByClassName("next action-button");
 let btnP = document.getElementsByClassName("previous action-button");
-let campos = document.querySelectorAll("#msform input:not([type=button]):not([type=submit])");
-let quebra = document.createElement("br");
+let btnSubmit = document.querySelector(".submit");
 
-// variaveis verificação
-let verVazio = false;
-let verTamSenha = false;
-let verConfSenha = false;
+//----------------------------------------------------------------------------------------------
 
-//---------------------------------------------------------
-function createValid(){
-    let verificacao = document.createElement("span");
-    verificacao.id = "verif";
-
-    return verificacao;
-}
-
-function agregValid(campo,texto){
-    let verificacao = createValid();
-
-    verificacao.append(texto);
-    campo.after(verificacao);
-    verificacao.after(quebra);
-
-    campo.addEventListener("focus", function (e) {
-        e.preventDefault;
-        verificacao.remove(texto);
-    });
-}
-
-function validVazio(campo){
+function validar(i){
+    // procurar os campos de um determinado (enesimo) fieldset que está dentro de um form
+    //a crase(``)serve para declarar uma string, assim como uma variavel qlq
+    //na variavel $({}) esta sendo passado (paramentro da função) o numero do fieldset que desejo pegar e depois quais tipos de inputs não quero pegar
+    //no caso i+1, pois no css a contagem começa a partir de 1
     
-    campo.addEventListener("blur", function (e) {
-
-        if (campo.value == "" && campo.type != "password") {
+    let campos = document.querySelectorAll(`form fieldset:nth-of-type(${i + 1}) input:not([type='button']):not([type='submit'])`);
+    
+    for(let c = 0 ; c < campos.length ; c++){
+        // conversão do conteudo para string e comparando se esta vazio
+        if(String(campos[c].value) == "" && campos[c].type != "password" && i != 1){ 
             
-            let textVali = document.createTextNode("Campo Obrigatório!");
-            agregValid(campo, textVali);
-
+            alert("Campo Obrigatório!");
+            campos[c].style.borderColor = "red";
+            
+            campos[c].addEventListener("focus", function(){
+                campos[c].style.borderColor = "#ccc";
+            });
             return false;
         }
-        return true;
-    });
+    }
+
+    if (i == 0){
+        if(String(campos[1].value.length) < 8 ){
+            alert("Senha deve conter pelo menos 8 caracteres!");
+            campos[1].style.borderColor = "red";
+            
+            campos[1].addEventListener("focus", function(){
+                campos[1].style.borderColor = "#ccc";
+            });
+            return false;
+        };
+
+        if(String(campos[1].value) != String(campos[2].value) ){
+            alert("Confirmação de senha inválida!");
+            campos[2].style.borderColor = "red";
+            
+            campos[2].addEventListener("focus", function(){
+                campos[2].style.borderColor = "#ccc";
+            });
+            return false;
+        };
+    };
+
+    
+    return true;
 };
 
-function validTamSenha(campo){
-    campo.addEventListener("blur", function (e) {
+//--------------------------------------------------------------------------------
+
+function proxForm(i){
+    if(validar(i)){
+        formularios[i].style.display="none";
+        formularios[i + 1].style.display="block";
+        progresso[i].classList.remove("active");
+        progresso[i+1].classList.add("active");
+    }
+};
+
+function PrevForm(i){
+    formularios[i].style.display = "none";
+    formularios[i - 1].style.display = "block";
+    progresso[i].classList.remove("active");
+    progresso[i-1].classList.add("active");
+};
+
+//---------------------------------------------------------------------------------
+
+for(let i = 0 ; i < btnN.length; i++){
+
+    btnN[i].addEventListener("click", function(e){
         e.preventDefault();
-        
-            if (campo.value.length < 8) {
-                let textVali = document.createTextNode("Senha com pelo menos 8 caracteres");
-                agregValid(campo, textVali);
 
-                return false;
-            }   
-        return true; 
-    }); 
+        proxForm(i);
+
+    });
+
 };
 
-function validConfSenha (campo1, campo2){
-    campo2.addEventListener("blur", function (e) {
+for(let i = 0 ; i < btnP.length; i++){
+
+    btnP[i].addEventListener("click", function(e){
         e.preventDefault();
-        
-            if (campo1.value != campo2.value) {
-                let textVali = document.createTextNode("Confirmação de senha inválida!");
-                agregValid(campo2, textVali);
 
-                return false;
-            }  
-            return true; 
+        PrevForm(i + 1);
+
     });
+
 };
 
-//-------------------------------------------------------------------------------------------
-for (let i = 0; i < campos.length; i++) {
+btnSubmit.addEventListener("click", function(e){
+    if(validar(0) && validar(1) && validar(2)){
 
-    campos[i].addEventListener("blur", function () {
-
-        verVazio = validVazio(campos[i]);
-    });
-};
- 
-verTamSenha = validTamSenha(campos[1]);
-verConfSenha = validConfSenha(campos[1], campos[2]);
-
-console.log(verVazio);
-console.log(verTamSenha);
-console.log(verConfSenha);
-
-if(verVazio == true && verTamSenha == true && verConfSenha == true){
-    console.log("teste");
-}
+    } else{
+        e.preventDefault();
+    }
+});
